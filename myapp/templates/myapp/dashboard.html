@@ -1,0 +1,51 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+
+<main class="dashboard-page">
+    <header class="dashboard-heading">
+        <div>
+            <p class="eyebrow">EventHub / Organizer</p>
+            <h1>Manage events</h1>
+            <p class="dashboard-intro">Review your listings and keep event details up to date.</p>
+        </div>
+        <a class="dashboard-create" href="{% url 'myapp:create_event' %}">+ Create event</a>
+    </header>
+
+    <p class="dashboard-count"><strong>{{ events|length }}</strong> total listings</p>
+
+    {% if events %}
+    <section class="dashboard-list" aria-label="Event listings">
+        {% for event in events %}
+        <article class="dashboard-event">
+            <a class="dashboard-event__banner" href="{% url 'myapp:event_detail' event.id %}" aria-label="View {{ event.title }}">
+                {% if event.banner %}
+                <img src="{{ event.banner.url }}" alt="{{ event.title }} event banner">
+                {% else %}
+                <span>Banner not added</span>
+                {% endif %}
+            </a>
+            <div class="dashboard-event__details">
+                <h2><a href="{% url 'myapp:event_detail' event.id %}">{{ event.title }}</a></h2>
+                <p class="dashboard-event__when">{{ event.date_time|date:"M j, Y - g:i A" }} <span aria-hidden="true">·</span> {{ event.venue }}</p>
+                <p class="dashboard-event__description">{{ event.description|truncatewords:18 }}</p>
+            </div>
+            <div class="dashboard-event__facts">
+                <strong>${{ event.price }}</strong>
+                <span>{{ event.capacity }} seats</span>
+            </div>
+            <div class="dashboard-event__actions">
+                <a class="dashboard-event__button" href="{% url 'myapp:edit_event' event.id %}">Edit</a>
+                <a class="dashboard-event__button dashboard-event__button--delete" href="{% url 'myapp:delete_event' event.id %}">Delete</a>
+            </div>
+        </article>
+        {% endfor %}
+    </section>
+    {% else %}
+    <section class="dashboard-empty">
+        <h2>No events yet</h2>
+        <p>Your event listings will appear here after you create one.</p>
+        <a class="dashboard-create" href="{% url 'myapp:create_event' %}">Create your first event</a>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}

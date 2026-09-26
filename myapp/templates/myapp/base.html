@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'myapp/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+     <header class="site-header">
+        <a class="brand" href="#">EventHub</a>
+        <nav class="site-nav" aria-label="Main navigation">
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'users:logout' %}">
+                {% csrf_token %}
+                <button class="signup-link" type="submit">Log out</button>
+            </form>
+            {% else %}
+            <a href="{% url 'users:login' %}">Login</a>
+            <a class="signup-link" href="{% url 'users:register' %}">Sign up</a>
+            {% endif %}
+        </nav>
+    </header>
+    {% if messages %}
+    {% for message in messages %}
+    <div>{{message}}</div>
+    {% endfor %}
+    
+    {% endif %}
+    
+    {% block body %}
+
+    {% endblock %}
+</body>
+</html>

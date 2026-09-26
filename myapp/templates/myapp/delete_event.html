@@ -1,0 +1,10 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+
+<p>Are you sure you want to delete this event?</p>
+<form action="" method="POST" class="card" style="max-width: 520px">
+    {% csrf_token %}
+    <button type="submit" class="danger">yes, Delete it</button>
+</form>
+
+{% endblock %}

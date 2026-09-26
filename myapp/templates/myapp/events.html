@@ -1,0 +1,40 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+
+<main class="events-page">
+    <div class="events-heading">
+        <p class="eyebrow">Find your next night out</p>
+        <h1>Upcoming events</h1>
+        <p class="events-intro">Live music, sharp laughs, and good company.</p>
+    </div>
+
+    {% if events %}
+    <section class="events-grid" aria-label="Upcoming events">
+        {% for event in events %}
+        <article class="event-card">
+            <a class="event-card__media" href="{% url 'myapp:event_detail' event.id %}" aria-label="View {{ event.title }}">
+                {% if event.banner %}
+                <img src="{{ event.banner.url }}" alt="{{ event.title }} event banner">
+                {% else %}
+                <span class="event-card__placeholder">Event banner coming soon</span>
+                {% endif %}
+            </a>
+            <div class="event-card__content">
+                <p class="event-card__date">{{ event.date_time|date:"M j, Y - g:i A" }}</p>
+                <h2>{{ event.title }}</h2>
+                <p class="event-card__organizer">Organized by {{ event.organizer.name }}</p>
+                <p class="event-card__description">{{ event.description|truncatewords:22 }}</p>
+                <div class="event-card__footer">
+                    <span>{{ event.venue }}</span>
+                    <span class="event-card__price">${{ event.price }}</span>
+                    <a class="event-card__link" href="{% url 'myapp:event_detail' event.id %}">View event</a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </section>
+    {% else %}
+    <p class="events-empty">No upcoming events are listed yet. Check back soon.</p>
+    {% endif %}
+</main>
+{% endblock %}

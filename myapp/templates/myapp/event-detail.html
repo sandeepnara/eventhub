@@ -1,0 +1,10 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+<h2>{{ event.title }}</h2>
+<h2>{{ event.description }}</h2>
+<h2>
+{{ event.venue }}
+{{ event.date_time }}
+{{ event.capacity }}
+</h2>
+{% endblock %}
